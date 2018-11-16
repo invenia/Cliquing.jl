@@ -116,7 +116,7 @@ function greedycliquing(m::AbstractMatrix{Bool}, minsize::Int)
         A[:, v] .= false
 
     end
-    cliques = map(c -> Clique(vertices(c)), cliques)
+    cliques = Clique[Clique(vertices(c)) for c in cliques]
     singletons = nodes_left[:]
     return cliques, singletons
 end
