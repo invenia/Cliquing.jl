@@ -14,8 +14,7 @@ export GreedyClique,
 
 using Forecasters
 using Memento
-using Compat: Compat, @__MODULE__, nameof
-using Compat.LinearAlgebra
+using LinearAlgebra
 
 const LOGGER = getlogger(@__MODULE__)
 

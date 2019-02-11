@@ -135,7 +135,7 @@ maximum clique.
 - `Clique`: One of the maximal cliques in the adjaceny matrix.
 """
 function anymaxclique(A::AbstractMatrix{Bool})
-    numNeighbours = Compat.sum(A, dims=2)[:]
+    numNeighbours = vec(sum(A, dims=2))
     m, n = size(A)
     maxSize = maximum(numNeighbours)
     idx = sortperm(numNeighbours, rev=true)

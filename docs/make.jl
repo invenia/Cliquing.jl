@@ -2,7 +2,7 @@ using Documenter, Cliquing
 
 makedocs(;
     modules=[Cliquing],
-    format=:html,
+    format=Documenter.HTML(prettyurls=(get(ENV, "CI", nothing) == "true")),
     pages=[
         "Home" => "index.md",
         "API" => "api.md"

@@ -1,7 +1,5 @@
 using Cliquing
-using Compat.Test
-
-using Missings
+using Test
 
 @testset "Cliquing.jl" begin
     @testset "Greedy Cliquing: Routine" begin
