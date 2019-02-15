@@ -11,7 +11,7 @@ version = "0.5.3"
 
 [[Cliquing]]
 deps = ["Forecasters", "LinearAlgebra", "Memento"]
-path = "/home/alex/.julia/dev/Cliquing"
+path = ".."
 uuid = "570927c9-3032-54d7-b655-f6b1c77412c2"
 version = "0.0.2+"
 
@@ -47,9 +47,9 @@ version = "0.6.0"
 
 [[Documenter]]
 deps = ["Base64", "DocStringExtensions", "InteractiveUtils", "LibGit2", "Logging", "Markdown", "Pkg", "REPL", "Random", "Test", "Unicode"]
-git-tree-sha1 = "0b834915b5521c626386c8b48d8fc61577bc642f"
+git-tree-sha1 = "59b71e0d3e9fa5966ffc4a25ff0ca8e0efa5e16b"
 uuid = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
-version = "0.21.2"
+version = "0.21.3"
 
 [[EzXML]]
 deps = ["BinaryProvider", "Libdl", "Printf", "Test"]
