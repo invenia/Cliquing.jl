@@ -89,7 +89,7 @@ function greedycliquing(m::AbstractMatrix{Bool}, minsize::Int)
     m, n = size(A)
     cliques = GreedyClique[]
     num_nodes_left = m
-    nodes_left = fill(true, (m, 1))
+    singletons = fill(true, m)
 
     debug(LOGGER, "Searching for cliques within adjacency matrix A($m, $n)")
 
@@ -106,18 +106,17 @@ function greedycliquing(m::AbstractMatrix{Bool}, minsize::Int)
 
             # These two lines not in the original MATLAB code but needed
             v = vertices(cliques[i])
-            nodes_left[v] .= false
+            singletons[v] .= false
             break
         end
 
         v = vertices(cliques[i])
-        nodes_left[v] .= false
+        singletons[v] .= false
         A[v, :] .= false
         A[:, v] .= false
 
     end
     cliques = Clique[Clique(vertices(c)) for c in cliques]
-    singletons = nodes_left[:]
     return cliques, singletons
 end
 
