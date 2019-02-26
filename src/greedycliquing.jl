@@ -76,7 +76,7 @@ found in this [2] Google doc.
 
 # Arguments
 - `A::AbstractMatrix{Bool}`: Adjacency Matrix
-- `minsize::Int`: Min greedyclique Size
+- `minsize::Int`: Min greedyclique size
 
 # Returns
 - `cliques::Array{Clique}`: Vector array of type Clique
@@ -86,24 +86,24 @@ found in this [2] Google doc.
 function greedycliquing(m::AbstractMatrix{Bool}, minsize::Int)
     A = copy(m)
     removediagonal!(A)
-    m, n = size(A)
+    num_nodes = size(A, 1)
+    singletons = fill(true, num_nodes)
     cliques = GreedyClique[]
-    num_nodes_left = m
-    singletons = fill(true, m)
 
-    debug(LOGGER, "Searching for cliques within adjacency matrix A($m, $n)")
-
-    for i in 1:m
+    debug(LOGGER, "Searching for cliques within adjacency matrix A with $num_nodes nodes.")
+    for i in 1:num_nodes
         push!(cliques, anymaxclique(A))
-        currSize = count(vertices(cliques[i]))
-        num_nodes_left -= currSize
+        clique_size = count(vertices(cliques[i]))
+        num_nodes -= clique_size
 
-        if currSize < minsize
-            debug(LOGGER, "Maximal clique at $i is less than the minimum size $minsize ($currSize)")
+        if clique_size < minsize
+            debug(
+                LOGGER,
+                "Maximal clique at $i less than the minimum size $minsize ($clique_size).")
             pop!(cliques)
             break
-        elseif num_nodes_left == 0
 
+        elseif num_nodes == 0
             # These two lines not in the original MATLAB code but needed
             v = vertices(cliques[i])
             singletons[v] .= false
@@ -114,7 +114,6 @@ function greedycliquing(m::AbstractMatrix{Bool}, minsize::Int)
         singletons[v] .= false
         A[v, :] .= false
         A[:, v] .= false
-
     end
     cliques = Clique[Clique(vertices(c)) for c in cliques]
     return cliques, singletons
