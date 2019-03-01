@@ -97,9 +97,8 @@ function greedycliquing(m::AbstractMatrix{Bool}, minsize::Int)
         num_nodes -= clique_size
 
         if clique_size < minsize
-            debug(
-                LOGGER,
-                "Maximal clique at $i less than the minimum size $minsize ($clique_size).")
+            # we won't always have found a maximal clique of at least size `minsize` yet, so
+            # just remove it from our vector of Cliques
             pop!(cliques)
             break
 
