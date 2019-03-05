@@ -14,7 +14,7 @@ struct GreedyClique <: AbstractClique
     mutuals::BitArray
     vertices::BitArray
     function GreedyClique(m::AbstractVector{Bool}, v::AbstractVector{Bool})
-        size(v) == size(m) || throw(DimensionMismatch("size mismatch"))
+        size(v) == size(m) || error(LOGGER, DimensionMismatch("size mismatch"))
         new(BitVector(m), BitVector(v))
     end
 end
@@ -89,7 +89,7 @@ function greedycliquing(A::AbstractMatrix{Bool}, minsize::Integer)
 end
 
 function greedycliquing!(A::AbstractMatrix{Bool}, minsize::Integer)
-    issymmetric(A) || throw(ArgumentError("Input Matrix not symmetric: $A"))
+    issymmetric(A) || throw(LOGGER, ArgumentError("Input Matrix not symmetric: $A"))
     removediagonal!(A)
     num_nodes = size(A, 1)
     singletons = fill(true, num_nodes)

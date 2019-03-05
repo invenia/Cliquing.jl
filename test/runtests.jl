@@ -1,4 +1,5 @@
 using Cliquing
+using Memento
 using Test
 
 @testset "Cliquing.jl" begin
@@ -104,7 +105,7 @@ using Test
 
             # Non-symmetric matrix input
             A = Bool[1 1 1 0; 1 1 1 0; 0 1 1 1; 0 0 0 1]
-            @test_throws ArgumentError greedycliquing(A, 2)
+            @test_throws getlogger(@__MODULE__) ArgumentError greedycliquing(A, 2)
         end
     end
 end
