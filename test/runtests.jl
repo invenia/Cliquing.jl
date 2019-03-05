@@ -54,29 +54,6 @@ using Test
             @test Cliquing.member(cliques[2]) == BitVector([0, 0, 1, 1, 0, 0])
             @test singletons == BitVector([0, 0, 0, 0, 0, 1])
 
-
-            # Another test. Create a random matrix in MATLAB and now comparing directly here
-            M = Bool[
-                1 1 0 0 1 0 0 0 1 1
-                1 1 0 1 1 0 1 1 0 1
-                0 0 1 0 0 0 1 0 1 1
-                1 1 1 1 0 1 0 0 1 0
-                0 0 1 0 0 0 1 0 1 0
-                1 0 0 1 1 0 0 0 0 0
-                0 0 1 0 0 1 0 1 0 1
-                0 1 1 1 1 1 1 0 0 0
-                0 1 0 1 0 1 1 1 1 1
-                0 0 0 1 1 1 1 0 0 1
-            ]
-            cliques, singletons = greedycliquing(M, 2)
-
-            @test size(cliques) == (3,)
-            @test Cliquing.member(cliques[1]) == BitVector([0, 1, 0, 1, 0, 0, 0, 1, 0, 0])
-            @test Cliquing.head(cliques[1]) == BitVector([0, 1, 0, 0, 0, 0, 0, 0, 0, 0])
-            @test Cliquing.member(cliques[2]) == BitVector([1, 0, 0, 0, 1, 0, 0, 0, 1, 0])
-            @test Cliquing.member(cliques[3]) == BitVector([0, 0, 1, 0, 0, 0, 1, 0, 0, 1])
-            @test singletons == BitVector([0, 0, 0, 0, 0, 1, 0, 0, 0, 0])
-
             # Another test. Create a designed matrix where AnyMaxClique returns a clique
             # that does not contain the node with the largest number of neighbours
             a = Bool[
