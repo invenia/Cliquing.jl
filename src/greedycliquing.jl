@@ -59,6 +59,7 @@ end
 
 """
     greedycliquing(A::AbstractMatrix{Bool},  minsize::Int)
+    greedycliquing!(A::AbstractMatrix{Bool},  minsize::Int)
 
 Greedy Cliquing Algorithm based off of:
 https://gitlab.invenia.ca/invenia/autopredictor/blob/develop/Tools/PreProcessing/GreedyCliquing.m
@@ -83,8 +84,11 @@ found in this [2] Google doc.
 - `singletons::Vector{Bool}`: Vector array of Bool. These indicate nodes not in a clique (singletons)
 
 """
-function greedycliquing(m::AbstractMatrix{Bool}, minsize::Int)
-    A = copy(m)
+function greedycliquing(A::AbstractMatrix{Bool}, minsize::Integer)
+    return greedycliquing!(copy(A), minsize)
+end
+
+function greedycliquing!(A::AbstractMatrix{Bool}, minsize::Integer)
     removediagonal!(A)
     num_nodes = size(A, 1)
     singletons = fill(true, num_nodes)
