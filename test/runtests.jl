@@ -124,6 +124,10 @@ using Test
             @test Cliquing.member(cliques[1]) == BitVector([0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1])
             @test Cliquing.head(cliques[1]) == BitVector([0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0])
             @test singletons == BitVector([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+
+            # Non-symmetric matrix input
+            A = Bool[1 1 1 0; 1 1 1 0; 0 1 1 1; 0 0 0 1]
+            @test_throws ArgumentError greedycliquing(A, 2)
         end
     end
 end
