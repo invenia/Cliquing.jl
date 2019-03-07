@@ -14,7 +14,7 @@ struct GreedyClique <: AbstractClique
     mutuals::BitArray
     vertices::BitArray
     function GreedyClique(m::AbstractVector{Bool}, v::AbstractVector{Bool})
-        size(v) == size(m) || throw(DimensionMismatch("size mismatch"))
+        size(v) == size(m) || error(LOGGER, DimensionMismatch("size mismatch"))
         new(BitVector(m), BitVector(v))
     end
 end
@@ -59,6 +59,7 @@ end
 
 """
     greedycliquing(A::AbstractMatrix{Bool},  minsize::Int)
+    greedycliquing!(A::AbstractMatrix{Bool},  minsize::Int)
 
 Greedy Cliquing Algorithm based off of:
 https://gitlab.invenia.ca/invenia/autopredictor/blob/develop/Tools/PreProcessing/GreedyCliquing.m
@@ -76,48 +77,49 @@ found in this [2] Google doc.
 
 # Arguments
 - `A::AbstractMatrix{Bool}`: Adjacency Matrix
-- `minsize::Int`: Min greedyclique Size
+- `minsize::Int`: Min greedyclique size
 
 # Returns
 - `cliques::Array{Clique}`: Vector array of type Clique
 - `singletons::Vector{Bool}`: Vector array of Bool. These indicate nodes not in a clique (singletons)
 
 """
-function greedycliquing(m::AbstractMatrix{Bool}, minsize::Int)
-    A = copy(m)
+function greedycliquing(A::AbstractMatrix{Bool}, minsize::Integer)
+    return greedycliquing!(copy(A), minsize)
+end
+
+function greedycliquing!(A::AbstractMatrix{Bool}, minsize::Integer)
+    issymmetric(A) || throw(LOGGER, ArgumentError("Input Matrix not symmetric: $A"))
     removediagonal!(A)
-    m, n = size(A)
+    num_nodes = size(A, 1)
+    singletons = fill(true, num_nodes)
     cliques = GreedyClique[]
-    num_nodes_left = m
-    nodes_left = fill(true, (m, 1))
 
-    debug(LOGGER, "Searching for cliques within adjacency matrix A($m, $n)")
-
-    for i in 1:m
+    debug(LOGGER, "Searching for cliques within adjacency matrix A with $num_nodes nodes.")
+    for i in 1:num_nodes
         push!(cliques, anymaxclique(A))
-        currSize = count(vertices(cliques[i]))
-        num_nodes_left -= currSize
+        clique_size = count(vertices(cliques[i]))
+        num_nodes -= clique_size
 
-        if currSize < minsize
-            debug(LOGGER, "Maximal clique at $i is less than the minimum size $minsize ($currSize)")
+        if clique_size < minsize
+            # we won't always have found a maximal clique of at least size `minsize` yet, so
+            # just remove it from our vector of Cliques
             pop!(cliques)
             break
-        elseif num_nodes_left == 0
 
+        elseif num_nodes == 0
             # These two lines not in the original MATLAB code but needed
             v = vertices(cliques[i])
-            nodes_left[v] .= false
+            singletons[v] .= false
             break
         end
 
         v = vertices(cliques[i])
-        nodes_left[v] .= false
+        singletons[v] .= false
         A[v, :] .= false
         A[:, v] .= false
-
     end
     cliques = Clique[Clique(vertices(c)) for c in cliques]
-    singletons = nodes_left[:]
     return cliques, singletons
 end
 
