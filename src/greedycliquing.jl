@@ -1,5 +1,5 @@
 """
-    mutable struct GreedyClique
+    struct GreedyClique
         vertices::BitArray
         mutuals::BitArray
     end
@@ -23,7 +23,6 @@ end
     vertices(c::GreedyClique) -> BitArray
 
 Return vertices of a clique as a logical vector.
-
 """
 vertices(c::GreedyClique) = c.vertices
 
@@ -31,7 +30,6 @@ vertices(c::GreedyClique) = c.vertices
     mutuals(c::GreedyClique) -> BitArray
 
 Return mutual neighbours (potential clique members) as a logical vector.
-
 """
 mutuals(c::GreedyClique) = c.mutuals
 
@@ -41,17 +39,15 @@ mutuals(c::GreedyClique) = c.mutuals
 
 Compare two cliques. They can be merged if the mutuals (neighbours) of one clique (C1)
 AND the vertices of the other clique (c2) match the vertices of c2.
-
 """
 function mergeable(c1::GreedyClique, c2::GreedyClique)
-     can = all(mutuals( c1 ) .& vertices( c2 ) .== vertices(c2))
+     return all(mutuals(c1) .& vertices(c2) .== vertices(c2))
 end
 
 """
     union(c1::GreedyClique, c2::GreedyClique) -> GreedyClique
 
-    Merges two cliques
-
+Merges two cliques.
 """
 function Base.union(c1::GreedyClique, c2::GreedyClique)
     GreedyClique(mutuals(c1) .& mutuals(c2), vertices(c1) .| vertices(c2))
@@ -74,15 +70,13 @@ found in this [2] Google doc.
 [1] http://en.wikipedia.org/wiki/Clique_(graph_theory)
 [2] https://docs.google.com/a/invenia.ca/document/d/1lLRfQT_TFJi1bTfIu_jGxDs1u9A9HYKX5s4Zta3VRNg/edit?usp=sharing
 
-
 # Arguments
 - `A::AbstractMatrix{Bool}`: Adjacency Matrix
 - `minsize::Int`: Min greedyclique size
 
 # Returns
 - `cliques::Array{Clique}`: Vector array of type Clique
-- `singletons::Vector{Bool}`: Vector array of Bool. These indicate nodes not in a clique (singletons)
-
+- `singletons::Vector{Bool}`: Vector array of Bool. These indicate nodes not in a clique
 """
 function greedycliquing(A::AbstractMatrix{Bool}, minsize::Integer)
     return greedycliquing!(copy(A), minsize)
@@ -132,7 +126,8 @@ node can be added to the clique, it adds it to the clique. Note that this is not
 maximum clique.
 
 # Arguments
-- `A::AbstractMatrix{Bool}`: Adjacency Matrix
+- `A::AbstractMatrix{Bool}`: Adjacency Matrix.
+
 # Returns
 - `Clique`: One of the maximal cliques in the adjaceny matrix.
 """
