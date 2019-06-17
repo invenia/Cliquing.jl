@@ -83,7 +83,7 @@ function greedycliquing(A::AbstractMatrix{Bool}, minsize::Integer)
 end
 
 function greedycliquing!(A::AbstractMatrix{Bool}, minsize::Integer)
-    issymmetric(A) || throw(LOGGER, ArgumentError("Input Matrix not symmetric: $A"))
+    issymmetric(A) || error(LOGGER, ArgumentError("Input matrix not symmetric: $A"))
     removediagonal!(A)
     num_nodes = size(A, 1)
     singletons = fill(true, num_nodes)
