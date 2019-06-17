@@ -1,6 +1,6 @@
 name = "Cliquing"
 uuid = "570927c9-3032-54d7-b655-f6b1c77412c2"
-version = "2.0.0"
+version = "2.0.1"
 author = "Invenia Technical Computing"
 
 [deps]
