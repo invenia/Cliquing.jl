@@ -1,4 +1,6 @@
 using Cliquing
+using Cliquing: greedycliquing!
+using LinearAlgebra
 using Memento
 using Test
 
@@ -44,8 +46,9 @@ using Test
 
         # GreedyCliquing
         @testset "GreedyCliqing" begin
-            a = Bool[1 1 0 0; 1 1 1 0; 0 1 1 1; 0 0 1 1]
-            cliques, singletons = greedycliquing(a, 2)
+            A = Bool[1 1 0 0; 1 1 1 0; 0 1 1 1; 0 0 1 1]
+            cliques, singletons = greedycliquing(A, 2)
+            @test A == A  # should not mutate input
             @test Cliquing.member(cliques[1]) == BitVector([0, 1, 1, 0])
 
             # Use the cliques [1,2,5] and [3,4] from https://en.wikipedia.org/wiki/Adjacency_matrix
@@ -106,6 +109,15 @@ using Test
             # Non-symmetric matrix input
             A = Bool[1 1 1 0; 1 1 1 0; 0 1 1 1; 0 0 0 1]
             @test_throws getlogger(@__MODULE__) ArgumentError greedycliquing(A, 2)
+
+            @testset "Symmetric type" begin
+                A = Symmetric(Bool[1 1 0 0; 1 1 1 0; 0 1 1 1; 0 0 1 1])
+                cliques, singletons = greedycliquing(A, 2)
+                @test A == A  # should not mutate input
+                @test Cliquing.member(cliques[1]) == BitVector([0, 1, 1, 0])
+                # Cannot mutate Symmetric matrix to non-symmetric matrix
+                @test_throws MethodError greedycliquing!(A, 2)
+            end
         end
     end
 end
