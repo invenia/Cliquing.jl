@@ -79,10 +79,15 @@ found in this [2] Google doc.
 - `singletons::Vector{Bool}`: Vector array of Bool. These indicate nodes not in a clique
 """
 function greedycliquing(A::AbstractMatrix{Bool}, minsize::Integer)
+    return greedycliquing!(collect(A), minsize)
+end
+
+# Avoid promoting BitMatrix to Matrix{Bool} as it has performance implications.
+function greedycliquing(A::BitMatrix, minsize::Integer)
     return greedycliquing!(copy(A), minsize)
 end
 
-function greedycliquing!(A::AbstractMatrix{Bool}, minsize::Integer)
+function greedycliquing!(A::Union{BitMatrix, Matrix{Bool}}, minsize::Integer)
     issymmetric(A) || error(LOGGER, ArgumentError("Input matrix not symmetric: $A"))
     removediagonal!(A)
     num_nodes = size(A, 1)
