@@ -5,10 +5,9 @@
     end
 
 # Arguments
-- `vertices::BitArray`: Vertices in the subgraph that defines a clique. BitVector ranging
-    over the number of vertex in the full graph that are true if identifies as a member of
-    the clique and false otherwise.
-- `mutuals::BitArray`: Vertices that neighbour the clique (potential clique members)
+- `vertices::AbstractVector{Bool}`: Logical vector; true for each vertex that is a member
+    of this clique.
+- `mutuals::AbstractVector{Bool}`: Vertices that neighbour the clique (potential clique members)
 """
 struct GreedyClique <: AbstractClique
     mutuals::BitArray
@@ -34,10 +33,9 @@ Return mutual neighbours (potential clique members) as a logical vector.
 mutuals(c::GreedyClique) = c.mutuals
 
 """
-
     mergeable(c1::GreedyCliqye, c2::GreedyClique) -> Bool
 
-Compare two cliques. They can be merged if the mutuals (neighbours) of one clique (C1)
+Compare two cliques. They can be merged if the mutuals (neighbours) of one clique (c1)
 AND the vertices of the other clique (c2) match the vertices of c2.
 """
 function mergeable(c1::GreedyClique, c2::GreedyClique)
@@ -54,20 +52,20 @@ function Base.union(c1::GreedyClique, c2::GreedyClique)
 end
 
 """
-    greedycliquing(A::AbstractMatrix{Bool},  minsize::Int)
-    greedycliquing!(A::AbstractMatrix{Bool},  minsize::Int)
+    greedycliquing(A::AbstractMatrix{Bool}, minsize::Int)
+    greedycliquing!(A::AbstractMatrix{Bool}, minsize::Int)
 
-Greedy Cliquing Algorithm based off of:
-https://gitlab.invenia.ca/invenia/autopredictor/blob/develop/Tools/PreProcessing/GreedyCliquing.m
+Greedy Cliquing Algorithm based off of previous MATLAB version.
 
-Splits an adjacency matrix into cliques [1] and remaining non-cliquable
-nodes. Compared to a previous version that acheives
+Splits an adjacency matrix into cliques[^1] and remaining non-cliquable
+nodes. Compared to a previous version that achieves
 maximum node set reduction through optimal cliquing, this version
 finds a maximal clique, removes its nodes from the adjacency matrix,
 and repeats until no cliques can be found. More discussion can be
-found in this [2] Google doc.
+found in this[^2] Google doc.
 
-[1] [Wikipedia: Clique_(graph_theory)](https://en.wikipedia.org/wiki/Clique_(graph_theory))
+[^1]: <http://en.wikipedia.org/wiki/Clique_(graph_theory)>
+[^2]: Private Invenia document: <https://docs.google.com/a/invenia.ca/document/d/1lLRfQT_TFJi1bTfIu_jGxDs1u9A9HYKX5s4Zta3VRNg/edit?usp=sharing>
 
 [2] [Cliquing Discussion GoogleDoc](https://docs.google.com/a/invenia.ca/document/d/1lLRfQT_TFJi1bTfIu_jGxDs1u9A9HYKX5s4Zta3VRNg/edit?usp=sharing)
 
@@ -76,7 +74,7 @@ found in this [2] Google doc.
 - `minsize::Int`: Min greedyclique size
 
 # Returns
-- `cliques::Array{Clique}`: Vector array of type Clique
+- `cliques::Vector{Clique}`: Vector array of type Clique
 - `singletons::Vector{Bool}`: Vector array of Bool. These indicate nodes not in a clique
 """
 function greedycliquing(A::AbstractMatrix{Bool}, minsize::Integer)
@@ -135,7 +133,7 @@ maximum clique.
 - `A::AbstractMatrix{Bool}`: Adjacency Matrix.
 
 # Returns
-- `Clique`: One of the maximal cliques in the adjacency matrix.
+- `clique::GreedyClique`: One of the maximal cliques in the adjacency matrix.
 """
 function anymaxclique(A::AbstractMatrix{Bool})
     numNeighbours = vec(sum(A, dims=2))
