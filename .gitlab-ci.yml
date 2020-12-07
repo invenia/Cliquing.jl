@@ -1,9 +1,0 @@
----
-include:
-  - project: invenia/gitlab-ci-helper
-    file: /templates/julia.yml
-
-variables:
-  # Only include Linux 64-bit jobs in the job matrix
-  os: "linux"        
-  platform: "64-bit"
