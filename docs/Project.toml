@@ -3,4 +3,4 @@ Cliquing = "570927c9-3032-54d7-b655-f6b1c77412c2"
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 
 [compat]
-Documenter = "~0.21"
+Documenter = "0.25"
