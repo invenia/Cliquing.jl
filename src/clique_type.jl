@@ -6,7 +6,7 @@ struct Clique <: AbstractClique
 
     function Clique(head::AbstractVector{Bool}, member::AbstractVector{Bool})
         size(head) == size(member) || throw(DimensionMismatch("size mismatch"))
-        new(BitVector(head), BitVector(member))
+        return new(BitVector(head), BitVector(member))
     end
 end
 
@@ -14,7 +14,7 @@ function Clique(member::AbstractVector{Bool}; allowsingle=false)
     head = falses(length(member))
     head[findfirst(member)] = true
     @assert sum(member) > 1
-    Clique(head, member)
+    return Clique(head, member)
 end
 
 head(c::Clique) = c.head
