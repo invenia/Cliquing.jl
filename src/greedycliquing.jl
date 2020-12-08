@@ -14,7 +14,7 @@ struct GreedyClique <: AbstractClique
     vertices::BitArray
     function GreedyClique(m::AbstractVector{Bool}, v::AbstractVector{Bool})
         size(v) == size(m) || error(LOGGER, DimensionMismatch("size mismatch"))
-        new(BitVector(m), BitVector(v))
+        return new(BitVector(m), BitVector(v))
     end
 end
 
@@ -39,7 +39,7 @@ Compare two cliques. They can be merged if the mutuals (neighbours) of one cliqu
 AND the vertices of the other clique (c2) match the vertices of c2.
 """
 function mergeable(c1::GreedyClique, c2::GreedyClique)
-     return all(mutuals(c1) .& vertices(c2) .== vertices(c2))
+    return all(mutuals(c1) .& vertices(c2) .== vertices(c2))
 end
 
 """
@@ -48,7 +48,7 @@ end
 Merges two cliques.
 """
 function Base.union(c1::GreedyClique, c2::GreedyClique)
-    GreedyClique(mutuals(c1) .& mutuals(c2), vertices(c1) .| vertices(c2))
+    return GreedyClique(mutuals(c1) .& mutuals(c2), vertices(c1) .| vertices(c2))
 end
 
 """
@@ -84,7 +84,7 @@ function greedycliquing(A::BitMatrix, minsize::Integer)
     return greedycliquing!(copy(A), minsize)
 end
 
-function greedycliquing!(A::Union{BitMatrix, Matrix{Bool}}, minsize::Integer)
+function greedycliquing!(A::Union{BitMatrix,Matrix{Bool}}, minsize::Integer)
     issymmetric(A) || error(LOGGER, ArgumentError("Input matrix not symmetric: $A"))
     removediagonal!(A)
     num_nodes = size(A, 1)
@@ -134,10 +134,10 @@ maximum clique.
 - `clique::GreedyClique`: One of the maximal cliques in the adjacency matrix.
 """
 function anymaxclique(A::AbstractMatrix{Bool})
-    numNeighbours = vec(sum(A, dims=2))
+    numNeighbours = vec(sum(A; dims=2))
     m, n = size(A)
     maxSize = maximum(numNeighbours)
-    idx = sortperm(numNeighbours, rev=true)
+    idx = sortperm(numNeighbours; rev=true)
     clique = GreedyClique(A[idx[1], :], ind2log(idx[1], m))
     vertexCount = 1
     for i in idx[2:end]
