@@ -37,7 +37,7 @@ using Test
 
         # UnionCliques
         @testset "UnionCliques" begin
-            c1 = GreedyClique(Bool[1, 0, 1, 0,], Bool[0, 1, 0, 0,])
+            c1 = GreedyClique(Bool[1, 0, 1, 0], Bool[0, 1, 0, 0])
             c2 = GreedyClique(Bool[0, 1, 0, 1], Bool[0, 0, 1, 0])
             out = Cliquing.union(c1, c2)
             @test Cliquing.mutuals(out) == BitVector([0, 0, 0, 0])
@@ -52,7 +52,14 @@ using Test
             @test Cliquing.member(cliques[1]) == BitVector([0, 1, 1, 0])
 
             # Use the cliques [1,2,5] and [3,4] from https://en.wikipedia.org/wiki/Adjacency_matrix
-            M = Bool[1 1 0 0 1 0; 1 0 1 0 1 0; 0 1 0 1 0 0; 0 0 1 0 1 1; 1 1 0 1 0 0; 0 0 0 1 0 0]
+            M = Bool[
+                1 1 0 0 1 0
+                1 0 1 0 1 0
+                0 1 0 1 0 0
+                0 0 1 0 1 1
+                1 1 0 1 0 0
+                0 0 0 1 0 0
+            ]
             cliques, singletons = greedycliquing(M, 2)
             @test Cliquing.member(cliques[1]) == BitVector([1, 1, 0, 0, 1, 0])
             @test Cliquing.member(cliques[2]) == BitVector([0, 0, 1, 1, 0, 0])
@@ -77,10 +84,14 @@ using Test
 
             cliques, singletons = greedycliquing(a, 2)
             @test size(cliques) == (2,)
-            @test Cliquing.member(cliques[2]) == BitVector([1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0])
-            @test Cliquing.head(cliques[2]) == BitVector([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-            @test Cliquing.member(cliques[1]) == BitVector([0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0])
-            @test Cliquing.head(cliques[1]) == BitVector([0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0])
+            @test Cliquing.member(cliques[2]) ==
+                  BitVector([1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0])
+            @test Cliquing.head(cliques[2]) ==
+                  BitVector([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+            @test Cliquing.member(cliques[1]) ==
+                  BitVector([0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0])
+            @test Cliquing.head(cliques[1]) ==
+                  BitVector([0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0])
             @test singletons == BitVector([0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1])
 
             a = Bool[
@@ -100,10 +111,14 @@ using Test
 
             cliques, singletons = greedycliquing(a, 2)
             @test size(cliques) == (2,)
-            @test Cliquing.member(cliques[2]) == BitVector([1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0])
-            @test Cliquing.head(cliques[2]) == BitVector([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-            @test Cliquing.member(cliques[1]) == BitVector([0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1])
-            @test Cliquing.head(cliques[1]) == BitVector([0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0])
+            @test Cliquing.member(cliques[2]) ==
+                  BitVector([1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0])
+            @test Cliquing.head(cliques[2]) ==
+                  BitVector([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+            @test Cliquing.member(cliques[1]) ==
+                  BitVector([0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1])
+            @test Cliquing.head(cliques[1]) ==
+                  BitVector([0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0])
             @test singletons == BitVector([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
             # Non-symmetric matrix input
