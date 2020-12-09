@@ -6,4 +6,4 @@ include:
 variables:
   # Only include Linux 64-bit jobs in the job matrix
   os: "linux"        
-  platform: "64-bit"
+  platform: "x86_64"
