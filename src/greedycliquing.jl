@@ -67,8 +67,9 @@ finds a maximal clique, removes its nodes from the adjacency matrix,
 and repeats until no cliques can be found. More discussion can be
 found in this [2] Google doc.
 
-[1] http://en.wikipedia.org/wiki/Clique_(graph_theory)
-[2] https://docs.google.com/a/invenia.ca/document/d/1lLRfQT_TFJi1bTfIu_jGxDs1u9A9HYKX5s4Zta3VRNg/edit?usp=sharing
+[1] [Wikipedia: Clique_(graph_theory)](https://en.wikipedia.org/wiki/Clique_(graph_theory))
+
+[2] [Cliquing Discussion GoogleDoc](https://docs.google.com/a/invenia.ca/document/d/1lLRfQT_TFJi1bTfIu_jGxDs1u9A9HYKX5s4Zta3VRNg/edit?usp=sharing)
 
 # Arguments
 - `A::AbstractMatrix{Bool}`: Adjacency Matrix
